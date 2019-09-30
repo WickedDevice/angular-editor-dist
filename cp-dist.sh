@@ -4,6 +4,8 @@
 
 # node ./roll-version.js $1
 
+set -x
+
 cd ../angular-editor
 npm run build:lib
 cd ../angular-editor-dist
