@@ -294,7 +294,8 @@
          * @return {?}
          */
         function (imageUrl) {
-            this.doc.execCommand('insertImage', false, imageUrl);
+            this.executeCommand('insertImage', imageUrl);
+            // this.doc.execCommand('insertImage', false, imageUrl);
         };
         /**
          * @param {?} separator
