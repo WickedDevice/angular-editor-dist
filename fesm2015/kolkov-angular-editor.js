@@ -565,10 +565,6 @@ class AngularEditorToolbarComponent {
                 value: 'p',
             },
             {
-                label: 'Heading 7',
-                value: 'h7',
-            },
-            {
                 label: 'Predefined',
                 value: 'pre'
             },
