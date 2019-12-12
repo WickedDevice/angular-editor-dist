@@ -694,7 +694,7 @@ class AngularEditorToolbarComponent {
             const result = this.doc.queryCommandState(e);
             /** @type {?} */
             const elementById = this.doc.getElementById(e + '-' + this.id);
-            if (result) {
+            if (result && elementById) {
                 this.r.addClass(elementById, 'active');
             }
             else {

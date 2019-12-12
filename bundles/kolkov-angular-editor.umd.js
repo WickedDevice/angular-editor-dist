@@ -863,7 +863,7 @@
                 var result = _this.doc.queryCommandState(e);
                 /** @type {?} */
                 var elementById = _this.doc.getElementById(e + '-' + _this.id);
-                if (result) {
+                if (result && elementById) {
                     _this.r.addClass(elementById, 'active');
                 }
                 else {
