@@ -16,6 +16,7 @@ export declare class AngularEditorService {
      * @param command string from triggerCommand
      */
     executeCommand(command: string, param?: string): void;
+    editCmd(cmd: string, param: string): void;
     /**
      * Create URL link
      * @param url string from UI prompt
