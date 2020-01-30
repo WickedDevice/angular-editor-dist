@@ -1066,8 +1066,40 @@ class AngularEditorComponent {
      * @return {?}
      */
     ngAfterViewInit() {
+        // Replace normal Paste with Paste Plain Text to simplify UX --JCN
+        this.textArea.nativeElement.addEventListener('paste', this.plainPaste.bind(this));
         if (isDefined(this.autoFocus)) {
             this.focus();
+        }
+    }
+    /**
+     * @param {?} e
+     * @return {?}
+     */
+    plainPaste(e) {
+        console.log();
+        e.preventDefault();
+        /** @type {?} */
+        let text = '';
+        if (e.clipboardData && e.clipboardData.getData) {
+            text = e.clipboardData.getData('text/plain');
+            this.doc.execCommand('insertHTML', false, text);
+        }
+        else if (this.doc.defaultView.clipboardData && this.doc.defaultView.clipboardData.getData) {
+            text = this.doc.defaultView.clipboardData.getData('Text');
+            if (this.doc.defaultView.getSelection) {
+                /** @type {?} */
+                const sel = this.doc.defaultView.getSelection();
+                if (sel.getRangeAt && sel.rangeCount) {
+                    /** @type {?} */
+                    const range = sel.getRangeAt(0);
+                    range.deleteContents();
+                    range.insertNode(this.doc.createTextNode(text));
+                }
+            }
+            else if (this.doc.selection && this.doc.selection.createRange) {
+                this.doc.selection.createRange().text = text;
+            }
         }
     }
     /**

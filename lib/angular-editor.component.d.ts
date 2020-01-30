@@ -39,6 +39,7 @@ export declare class AngularEditorComponent implements OnInit, ControlValueAcces
     constructor(r: Renderer2, editorService: AngularEditorService, doc: any, sanitizer: DomSanitizer, cdRef: ChangeDetectorRef, defaultTabIndex: string, autoFocus: any);
     ngOnInit(): void;
     ngAfterViewInit(): void;
+    plainPaste(e: any): void;
     doInsertHTML(name: string): void;
     /**
      * Executed command from editor header buttons
