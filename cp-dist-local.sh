@@ -6,9 +6,6 @@
 
 set -x
 
-read -r -p "Are you sure? [y/N] " response
-if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
-then
   cd ../angular-editor
   npm run build:lib
   cd ../angular-editor-dist
@@ -17,6 +14,7 @@ then
   mkdir temp-keep
   mkdir temp-rm
 
+  cp ./cp-dist-local.sh temp-keep # add any files we want to preserve to temp-keep
   cp ./cp-dist.sh temp-keep # add any files we want to preserve to temp-keep
   mv ./* temp-rm
   mv ./temp-rm/temp-keep ./
@@ -26,10 +24,4 @@ then
   rm -rf ./temp-rm
   rm -rf ./temp-keep
 
-  git add .
-  git commit -m"update package"
-  git push
-
-else
-    echo Aborted
-fi
+  cp -rf ./* ../epidemiology-webportal/node_modules/@kolkov/angular-editor/
