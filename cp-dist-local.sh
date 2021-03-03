@@ -23,5 +23,5 @@ set -x
 
   rm -rf ./temp-rm
   rm -rf ./temp-keep
-
+  rm -rf ../epidemiology-webportal/node_modules/@kolkov/angular-editor/*
   cp -rf ./* ../epidemiology-webportal/node_modules/@kolkov/angular-editor/
