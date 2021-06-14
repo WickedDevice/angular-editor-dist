@@ -10,7 +10,7 @@ read -r -p "Are you sure? [y/N] " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
 then
   cd ../angular-editor
-  npm run build:lib
+  npm run build-prod:lib
   cd ../angular-editor-dist
   git checkout .
 
