@@ -1,5 +1,6 @@
 /**
  * Generated bundle index. Do not edit.
  */
-/// <amd-module name="@kolkov/angular-editor" />
 export * from './public-api';
+export { AeSelectComponent as ɵb } from './lib/ae-select/ae-select.component';
+export { ImageResizeService as ɵa } from './lib/image-resize.service';

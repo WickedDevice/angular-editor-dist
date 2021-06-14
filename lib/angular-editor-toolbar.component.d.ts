@@ -1,11 +1,13 @@
-import { ElementRef, EventEmitter, Renderer2 } from '@angular/core';
+import { ElementRef, EventEmitter, PipeTransform, Renderer2 } from '@angular/core';
 import { AngularEditorService, UploadResponse } from './angular-editor.service';
 import { HttpResponse, HttpEvent } from '@angular/common/http';
 import { CustomClass } from './config';
 import { SelectOption } from './ae-select/ae-select.component';
 import { Observable } from 'rxjs';
 import { ImageResizeService } from './image-resize.service';
-import * as i0 from "@angular/core";
+export declare class AEButtonIsHiddenPipe implements PipeTransform {
+    transform(name: string, hiddenButtons: any): boolean;
+}
 export declare class AngularEditorToolbarComponent {
     private r;
     private editorService;
@@ -39,6 +41,7 @@ export declare class AngularEditorToolbarComponent {
     set defaultFontName(value: string);
     set defaultFontSize(value: string);
     hiddenButtons: string[][];
+    insertResourceCallback: (string: any) => string;
     execute: EventEmitter<string>;
     markdownEmitter: EventEmitter<boolean>;
     myInputFile: ElementRef;
@@ -65,6 +68,7 @@ export declare class AngularEditorToolbarComponent {
      * insert Video link
      */
     insertVideo(): void;
+    insertResource(): Promise<void>;
     /** insert color */
     insertColor(color: string, where: string): void;
     /**
@@ -94,8 +98,5 @@ export declare class AngularEditorToolbarComponent {
      * Set custom class
      */
     setCustomClass(classId: string): void;
-    isButtonHidden(name: string): boolean;
     focus(): void;
-    static ɵfac: i0.ɵɵFactoryDef<AngularEditorToolbarComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDefWithMeta<AngularEditorToolbarComponent, "angular-editor-toolbar", never, { "id": "id"; "uploadUrl": "uploadUrl"; "upload": "upload"; "showToolbar": "showToolbar"; "fonts": "fonts"; "customClasses": "customClasses"; "defaultFontName": "defaultFontName"; "defaultFontSize": "defaultFontSize"; "hiddenButtons": "hiddenButtons"; }, { "execute": "execute"; "markdownEmitter": "markdownEmitter"; }, never, never>;
 }

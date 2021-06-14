@@ -36,8 +36,6 @@
   "esm2015": "esm2015/kolkov-angular-editor.js",
   "fesm2015": "fesm2015/kolkov-angular-editor.js",
   "typings": "kolkov-angular-editor.d.ts",
-  "sideEffects": false,
-  "scripts": {
-    "prepublishOnly": "node --eval \"console.error('ERROR: Trying to publish a package that has been compiled by Ivy. This is not allowed.\\nPlease delete and rebuild the package, without compiling with Ivy, before attempting to publish.\\n')\" && exit 1"
-  }
+  "metadata": "kolkov-angular-editor.metadata.json",
+  "sideEffects": false
 }

@@ -1,30 +1,21 @@
 import { NgModule } from '@angular/core';
 import { AngularEditorComponent } from './angular-editor.component';
-import { AngularEditorToolbarComponent } from './angular-editor-toolbar.component';
+import { AEButtonIsHiddenPipe, AngularEditorToolbarComponent } from './angular-editor-toolbar.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AeSelectComponent } from './ae-select/ae-select.component';
-import * as i0 from "@angular/core";
 export class AngularEditorModule {
 }
-AngularEditorModule.ɵmod = i0.ɵɵdefineNgModule({ type: AngularEditorModule });
-AngularEditorModule.ɵinj = i0.ɵɵdefineInjector({ factory: function AngularEditorModule_Factory(t) { return new (t || AngularEditorModule)(); }, imports: [[
-            CommonModule, FormsModule, ReactiveFormsModule
-        ]] });
-(function () { (typeof ngJitMode === "undefined" || ngJitMode) && i0.ɵɵsetNgModuleScope(AngularEditorModule, { declarations: [AngularEditorComponent,
-        AngularEditorToolbarComponent,
-        AeSelectComponent], imports: [CommonModule, FormsModule, ReactiveFormsModule], exports: [AngularEditorComponent,
-        AngularEditorToolbarComponent] }); })();
-/*@__PURE__*/ (function () { i0.ɵsetClassMetadata(AngularEditorModule, [{
-        type: NgModule,
-        args: [{
+AngularEditorModule.decorators = [
+    { type: NgModule, args: [{
                 imports: [
                     CommonModule, FormsModule, ReactiveFormsModule
                 ],
                 declarations: [
                     AngularEditorComponent,
                     AngularEditorToolbarComponent,
-                    AeSelectComponent
+                    AeSelectComponent,
+                    AEButtonIsHiddenPipe
                 ],
                 // providers: [
                 //   AngularEditorService,
@@ -34,6 +25,6 @@ AngularEditorModule.ɵinj = i0.ɵɵdefineInjector({ factory: function AngularEdi
                     AngularEditorComponent,
                     AngularEditorToolbarComponent
                 ]
-            }]
-    }], null, null); })();
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiYW5ndWxhci1lZGl0b3IubW9kdWxlLmpzIiwic291cmNlUm9vdCI6Ii9ob21lL2pvZW5vbGFuL2Rldi9hbmd1bGFyLWVkaXRvci9wcm9qZWN0cy9hbmd1bGFyLWVkaXRvci9zcmMvIiwic291cmNlcyI6WyJsaWIvYW5ndWxhci1lZGl0b3IubW9kdWxlLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLE9BQU8sRUFBQyxRQUFRLEVBQUMsTUFBTSxlQUFlLENBQUM7QUFDdkMsT0FBTyxFQUFDLHNCQUFzQixFQUFDLE1BQU0sNEJBQTRCLENBQUM7QUFDbEUsT0FBTyxFQUFDLDZCQUE2QixFQUFDLE1BQU0sb0NBQW9DLENBQUM7QUFDakYsT0FBTyxFQUFDLFdBQVcsRUFBRSxtQkFBbUIsRUFBQyxNQUFNLGdCQUFnQixDQUFDO0FBQ2hFLE9BQU8sRUFBQyxZQUFZLEVBQUMsTUFBTSxpQkFBaUIsQ0FBQztBQUM3QyxPQUFPLEVBQUUsaUJBQWlCLEVBQUUsTUFBTSxpQ0FBaUMsQ0FBQzs7QUFzQnBFLE1BQU0sT0FBTyxtQkFBbUI7O3VEQUFuQixtQkFBbUI7cUhBQW5CLG1CQUFtQixrQkFqQnJCO1lBQ1AsWUFBWSxFQUFFLFdBQVcsRUFBRSxtQkFBbUI7U0FDL0M7d0ZBZVUsbUJBQW1CLG1CQWI1QixzQkFBc0I7UUFDdEIsNkJBQTZCO1FBQzdCLGlCQUFpQixhQUxqQixZQUFZLEVBQUUsV0FBVyxFQUFFLG1CQUFtQixhQVk5QyxzQkFBc0I7UUFDdEIsNkJBQTZCO2tEQUdwQixtQkFBbUI7Y0FsQi9CLFFBQVE7ZUFBQztnQkFDUixPQUFPLEVBQUU7b0JBQ1AsWUFBWSxFQUFFLFdBQVcsRUFBRSxtQkFBbUI7aUJBQy9DO2dCQUNELFlBQVksRUFBRTtvQkFDWixzQkFBc0I7b0JBQ3RCLDZCQUE2QjtvQkFDN0IsaUJBQWlCO2lCQUNsQjtnQkFDRCxlQUFlO2dCQUNmLDBCQUEwQjtnQkFDMUIsdUJBQXVCO2dCQUN2QixLQUFLO2dCQUNMLE9BQU8sRUFBRTtvQkFDUCxzQkFBc0I7b0JBQ3RCLDZCQUE2QjtpQkFDOUI7YUFDRiIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7TmdNb2R1bGV9IGZyb20gJ0Bhbmd1bGFyL2NvcmUnO1xuaW1wb3J0IHtBbmd1bGFyRWRpdG9yQ29tcG9uZW50fSBmcm9tICcuL2FuZ3VsYXItZWRpdG9yLmNvbXBvbmVudCc7XG5pbXBvcnQge0FuZ3VsYXJFZGl0b3JUb29sYmFyQ29tcG9uZW50fSBmcm9tICcuL2FuZ3VsYXItZWRpdG9yLXRvb2xiYXIuY29tcG9uZW50JztcbmltcG9ydCB7Rm9ybXNNb2R1bGUsIFJlYWN0aXZlRm9ybXNNb2R1bGV9IGZyb20gJ0Bhbmd1bGFyL2Zvcm1zJztcbmltcG9ydCB7Q29tbW9uTW9kdWxlfSBmcm9tICdAYW5ndWxhci9jb21tb24nO1xuaW1wb3J0IHsgQWVTZWxlY3RDb21wb25lbnQgfSBmcm9tICcuL2FlLXNlbGVjdC9hZS1zZWxlY3QuY29tcG9uZW50JztcbmltcG9ydCB7IEFuZ3VsYXJFZGl0b3JTZXJ2aWNlIH0gZnJvbSAnLi9hbmd1bGFyLWVkaXRvci5zZXJ2aWNlJztcbmltcG9ydCB7IEltYWdlUmVzaXplU2VydmljZSB9IGZyb20gJy4vaW1hZ2UtcmVzaXplLnNlcnZpY2UnO1xuXG5ATmdNb2R1bGUoe1xuICBpbXBvcnRzOiBbXG4gICAgQ29tbW9uTW9kdWxlLCBGb3Jtc01vZHVsZSwgUmVhY3RpdmVGb3Jtc01vZHVsZVxuICBdLFxuICBkZWNsYXJhdGlvbnM6IFtcbiAgICBBbmd1bGFyRWRpdG9yQ29tcG9uZW50LFxuICAgIEFuZ3VsYXJFZGl0b3JUb29sYmFyQ29tcG9uZW50LFxuICAgIEFlU2VsZWN0Q29tcG9uZW50XG4gIF0sXG4gIC8vIHByb3ZpZGVyczogW1xuICAvLyAgIEFuZ3VsYXJFZGl0b3JTZXJ2aWNlLFxuICAvLyAgIEltYWdlUmVzaXplU2VydmljZVxuICAvLyBdLFxuICBleHBvcnRzOiBbXG4gICAgQW5ndWxhckVkaXRvckNvbXBvbmVudCxcbiAgICBBbmd1bGFyRWRpdG9yVG9vbGJhckNvbXBvbmVudFxuICBdXG59KVxuZXhwb3J0IGNsYXNzIEFuZ3VsYXJFZGl0b3JNb2R1bGUge1xufVxuIl19
+            },] }
+];
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiYW5ndWxhci1lZGl0b3IubW9kdWxlLmpzIiwic291cmNlUm9vdCI6Ii9ob21lL3ZpYy9kZXYvYW5ndWxhci1lZGl0b3IvcHJvamVjdHMvYW5ndWxhci1lZGl0b3Ivc3JjLyIsInNvdXJjZXMiOlsibGliL2FuZ3VsYXItZWRpdG9yLm1vZHVsZS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSxPQUFPLEVBQUMsUUFBUSxFQUFDLE1BQU0sZUFBZSxDQUFDO0FBQ3ZDLE9BQU8sRUFBQyxzQkFBc0IsRUFBQyxNQUFNLDRCQUE0QixDQUFDO0FBQ2xFLE9BQU8sRUFBQyxvQkFBb0IsRUFBRSw2QkFBNkIsRUFBQyxNQUFNLG9DQUFvQyxDQUFDO0FBQ3ZHLE9BQU8sRUFBQyxXQUFXLEVBQUUsbUJBQW1CLEVBQUMsTUFBTSxnQkFBZ0IsQ0FBQztBQUNoRSxPQUFPLEVBQUMsWUFBWSxFQUFDLE1BQU0saUJBQWlCLENBQUM7QUFDN0MsT0FBTyxFQUFFLGlCQUFpQixFQUFFLE1BQU0saUNBQWlDLENBQUM7QUF1QnBFLE1BQU0sT0FBTyxtQkFBbUI7OztZQW5CL0IsUUFBUSxTQUFDO2dCQUNSLE9BQU8sRUFBRTtvQkFDUCxZQUFZLEVBQUUsV0FBVyxFQUFFLG1CQUFtQjtpQkFDL0M7Z0JBQ0QsWUFBWSxFQUFFO29CQUNaLHNCQUFzQjtvQkFDdEIsNkJBQTZCO29CQUM3QixpQkFBaUI7b0JBQ2pCLG9CQUFvQjtpQkFDckI7Z0JBQ0QsZUFBZTtnQkFDZiwwQkFBMEI7Z0JBQzFCLHVCQUF1QjtnQkFDdkIsS0FBSztnQkFDTCxPQUFPLEVBQUU7b0JBQ1Asc0JBQXNCO29CQUN0Qiw2QkFBNkI7aUJBQzlCO2FBQ0YiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQge05nTW9kdWxlfSBmcm9tICdAYW5ndWxhci9jb3JlJztcbmltcG9ydCB7QW5ndWxhckVkaXRvckNvbXBvbmVudH0gZnJvbSAnLi9hbmd1bGFyLWVkaXRvci5jb21wb25lbnQnO1xuaW1wb3J0IHtBRUJ1dHRvbklzSGlkZGVuUGlwZSwgQW5ndWxhckVkaXRvclRvb2xiYXJDb21wb25lbnR9IGZyb20gJy4vYW5ndWxhci1lZGl0b3ItdG9vbGJhci5jb21wb25lbnQnO1xuaW1wb3J0IHtGb3Jtc01vZHVsZSwgUmVhY3RpdmVGb3Jtc01vZHVsZX0gZnJvbSAnQGFuZ3VsYXIvZm9ybXMnO1xuaW1wb3J0IHtDb21tb25Nb2R1bGV9IGZyb20gJ0Bhbmd1bGFyL2NvbW1vbic7XG5pbXBvcnQgeyBBZVNlbGVjdENvbXBvbmVudCB9IGZyb20gJy4vYWUtc2VsZWN0L2FlLXNlbGVjdC5jb21wb25lbnQnO1xuaW1wb3J0IHsgQW5ndWxhckVkaXRvclNlcnZpY2UgfSBmcm9tICcuL2FuZ3VsYXItZWRpdG9yLnNlcnZpY2UnO1xuaW1wb3J0IHsgSW1hZ2VSZXNpemVTZXJ2aWNlIH0gZnJvbSAnLi9pbWFnZS1yZXNpemUuc2VydmljZSc7XG5cbkBOZ01vZHVsZSh7XG4gIGltcG9ydHM6IFtcbiAgICBDb21tb25Nb2R1bGUsIEZvcm1zTW9kdWxlLCBSZWFjdGl2ZUZvcm1zTW9kdWxlXG4gIF0sXG4gIGRlY2xhcmF0aW9uczogW1xuICAgIEFuZ3VsYXJFZGl0b3JDb21wb25lbnQsXG4gICAgQW5ndWxhckVkaXRvclRvb2xiYXJDb21wb25lbnQsXG4gICAgQWVTZWxlY3RDb21wb25lbnQsXG4gICAgQUVCdXR0b25Jc0hpZGRlblBpcGVcbiAgXSxcbiAgLy8gcHJvdmlkZXJzOiBbXG4gIC8vICAgQW5ndWxhckVkaXRvclNlcnZpY2UsXG4gIC8vICAgSW1hZ2VSZXNpemVTZXJ2aWNlXG4gIC8vIF0sXG4gIGV4cG9ydHM6IFtcbiAgICBBbmd1bGFyRWRpdG9yQ29tcG9uZW50LFxuICAgIEFuZ3VsYXJFZGl0b3JUb29sYmFyQ29tcG9uZW50XG4gIF1cbn0pXG5leHBvcnQgY2xhc3MgQW5ndWxhckVkaXRvck1vZHVsZSB7XG59XG4iXX0=

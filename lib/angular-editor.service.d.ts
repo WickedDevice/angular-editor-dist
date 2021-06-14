@@ -2,7 +2,6 @@ import { ElementRef } from '@angular/core';
 import { HttpClient, HttpEvent } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CustomClass } from './config';
-import * as i0 from "@angular/core";
 export interface UploadResponse {
     imageUrl: string;
 }
@@ -78,6 +77,7 @@ export declare class AngularEditorService {
     setDefaultParagraphSeparator(separator: string): void;
     createCustomClass(customClass: CustomClass): void;
     insertVideo(videoUrl: string): void;
+    insertArbitraryHtml(html: string): void;
     private insertYouTubeVideoTag;
     private insertVimeoVideoTag;
     nextNode(node: any): any;
@@ -85,6 +85,4 @@ export declare class AngularEditorService {
     getSelectedNodes(): any[];
     replaceWithOwnChildren(el: any): void;
     removeSelectedElements(tagNames: any): void;
-    static ɵfac: i0.ɵɵFactoryDef<AngularEditorService, never>;
-    static ɵprov: i0.ɵɵInjectableDef<AngularEditorService>;
 }
