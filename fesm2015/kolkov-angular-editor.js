@@ -740,7 +740,6 @@ class AngularEditorToolbarComponent {
     }
     insertResource() {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log('Insert Resource Called');
             if (this.insertResourceCallback) {
                 const ret = yield this.insertResourceCallback(this.editorService.selectedText);
                 if (typeof ret === 'string') {

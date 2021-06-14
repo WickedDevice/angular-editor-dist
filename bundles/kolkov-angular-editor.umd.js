@@ -1498,7 +1498,6 @@
                 return __generator(this, function (_a) {
                     switch (_a.label) {
                         case 0:
-                            console.log('Insert Resource Called');
                             if (!this.insertResourceCallback) return [3 /*break*/, 2];
                             return [4 /*yield*/, this.insertResourceCallback(this.editorService.selectedText)];
                         case 1:
