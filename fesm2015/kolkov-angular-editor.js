@@ -1,4 +1,4 @@
-import { ɵɵinject, ɵɵdefineInjectable, ɵsetClassMetadata, Injectable, Inject, EventEmitter, ɵɵdirectiveInject, Renderer2, ElementRef, ɵɵdefineComponent, ɵɵstaticViewQuery, ɵɵqueryRefresh, ɵɵloadQuery, ɵɵgetCurrentView, ɵɵelementStart, ɵɵlistener, ɵɵelement, ɵɵelementEnd, ɵɵrestoreView, ɵɵreference, ɵɵtext, ɵɵproperty, ɵɵadvance, Component, Input, Output, ViewChild, ɵɵnextContext, SecurityContext, ChangeDetectorRef, ɵɵinjectAttribute, ɵɵviewQuery, ɵɵattribute, ɵɵProvidersFeature, forwardRef, ɵɵtemplate, ɵɵstyleProp, ɵɵtextInterpolate, ViewEncapsulation, Attribute, HostBinding, HostListener, ɵɵpureFunction2, ɵɵtextInterpolate1, ɵɵresolveDocument, ɵɵnamespaceSVG, ɵɵnamespaceHTML, ɵɵpureFunction1, ɵɵdefineNgModule, ɵɵdefineInjector, ɵɵsetNgModuleScope, NgModule } from '@angular/core';
+import { ɵɵinject, ɵɵdefineInjectable, ɵsetClassMetadata, Injectable, Inject, EventEmitter, ɵɵdirectiveInject, Renderer2, ElementRef, ɵɵdefineComponent, ɵɵstaticViewQuery, ɵɵqueryRefresh, ɵɵloadQuery, ɵɵgetCurrentView, ɵɵelementStart, ɵɵlistener, ɵɵelement, ɵɵelementEnd, ɵɵrestoreView, ɵɵreference, ɵɵtext, ɵɵproperty, ɵɵadvance, Component, Input, Output, ViewChild, ɵɵnextContext, SecurityContext, ChangeDetectorRef, ɵɵinjectAttribute, ɵɵattribute, ɵɵProvidersFeature, forwardRef, ɵɵtemplate, ɵɵstyleProp, ɵɵtextInterpolate, ViewEncapsulation, Attribute, HostBinding, HostListener, ɵɵpureFunction2, ɵɵtextInterpolate1, ɵɵresolveDocument, ɵɵnamespaceSVG, ɵɵnamespaceHTML, ɵɵpureFunction1, ɵɵdefineNgModule, ɵɵdefineInjector, ɵɵsetNgModuleScope, NgModule } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DOCUMENT, NgIf, NgClass, NgForOf, CommonModule } from '@angular/common';
 import { v4 } from 'uuid';
@@ -12,7 +12,10 @@ class AngularEditorService {
         /**
          * save selection when the editor is focussed out
          */
-        this.saveSelection = () => {
+        this.saveSelection = (el) => {
+            if (!this.elementContainsSelection(el.nativeElement)) {
+                return; // do not save browser selections that are outside the editor
+            }
             if (this.doc.getSelection) {
                 const sel = this.doc.getSelection();
                 if (sel.getRangeAt && sel.rangeCount) {
@@ -44,7 +47,7 @@ class AngularEditorService {
         // console.log(`executeCommand: ${command} ${param}`);
         this.restoreSelection(); // Prevent lost focus issues --JCN
         // console.log('restoring selection');
-        this.doc.execCommand(cmd, false, param);
+        return !!this.doc.execCommand(cmd, false, param);
     }
     /**
      * Create URL link
@@ -95,14 +98,34 @@ class AngularEditorService {
      * @param html HTML string
      */
     insertHtml(html) {
-        let isHTMLInserted = this.doc.execCommand('insertHTML', false, html);
+        let isHTMLInserted = this.editCmd('insertHTML', html);
         if (!isHTMLInserted) {
             // retry...sometimes its needed
-            isHTMLInserted = this.doc.execCommand('insertHTML', false, html);
+            isHTMLInserted = this.editCmd('insertHTML', html);
             if (!isHTMLInserted) {
                 throw new Error('Unable to perform the operation');
             }
         }
+    }
+    elementContainsSelection(el) {
+        if (!el) {
+            return false;
+        }
+        const view = this.doc.defaultView;
+        const sel = view.getSelection();
+        if (sel && sel.rangeCount > 0) {
+            return this.isOrContainsDomElem(sel.getRangeAt(0).commonAncestorContainer, el);
+        }
+        return false;
+    }
+    isOrContainsDomElem(node, container) {
+        while (node) {
+            if (node === container) {
+                return true;
+            }
+            node = node.parentNode;
+        }
+        return false;
     }
     /**
      * restore selection when the editor is focused in
@@ -112,6 +135,7 @@ class AngularEditorService {
     restoreSelection() {
         if (this.savedSelection) {
             if (this.doc.getSelection) {
+                // console.log(`***Restoring selection : ${this.savedSelection.startContainer.nodeName} ${this.savedSelection.endContainer.nodeName}`);
                 const sel = this.doc.getSelection();
                 sel.removeAllRanges();
                 sel.addRange(this.savedSelection);
@@ -1080,6 +1104,7 @@ class AngularEditorComponent {
      * @param command string from triggerCommand
      */
     executeCommand(command) {
+        console.log(`***Execute command: ${command}`);
         this.focus();
         if (command === 'focus') {
             return;
@@ -1125,7 +1150,7 @@ class AngularEditorComponent {
      * @description fires when cursor leaves textarea
      */
     onTextAreaMouseOut(event) {
-        this.editorService.saveSelection();
+        this.editorService.saveSelection(this.textArea);
     }
     /**
      * blur event
@@ -1136,7 +1161,7 @@ class AngularEditorComponent {
          */
         // this.editorService.executeInNextQueueIteration(this.editorService.saveSelection);
         // Changing from async to sync here seemed to fix an "unfocused" problem
-        this.editorService.saveSelection();
+        this.editorService.saveSelection(this.textArea);
         if (typeof this.onTouched === 'function') {
             this.onTouched();
         }
@@ -1159,6 +1184,7 @@ class AngularEditorComponent {
      */
     focus() {
         if (this.modeVisual) {
+            this.editorService.restoreSelection();
             this.textArea.nativeElement.focus();
         }
         else {
@@ -1320,11 +1346,13 @@ class AngularEditorComponent {
      * Send a node array from the contentEditable of the editor
      */
     exec() {
-        this.editorToolbar.triggerButtons();
+        if (this.editorToolbar && this.editorToolbar.triggerButtons) {
+            this.editorToolbar.triggerButtons();
+        }
         let userSelection;
         if (this.doc.getSelection) {
             userSelection = this.doc.getSelection();
-            this.editorService.executeInNextQueueIteration(this.editorService.saveSelection);
+            this.editorService.executeInNextQueueIteration(this.editorService.saveSelection.bind(this, this.textArea));
         }
         let a = userSelection.focusNode;
         const els = [];
@@ -1332,7 +1360,9 @@ class AngularEditorComponent {
             els.unshift(a);
             a = a.parentNode;
         }
-        this.editorToolbar.triggerBlocks(els);
+        if (this.editorToolbar && this.editorToolbar.triggerBlocks) {
+            this.editorToolbar.triggerBlocks(els);
+        }
     }
     configure() {
         this.editorService.uploadUrl = this.config.uploadUrl;
@@ -1381,7 +1411,7 @@ AngularEditorComponent.ɵfac = function AngularEditorComponent_Factory(t) { retu
 AngularEditorComponent.ɵcmp = ɵɵdefineComponent({ type: AngularEditorComponent, selectors: [["angular-editor"]], viewQuery: function AngularEditorComponent_Query(rf, ctx) { if (rf & 1) {
         ɵɵstaticViewQuery(_c0$1, true);
         ɵɵstaticViewQuery(_c1, true);
-        ɵɵviewQuery(_c2, true);
+        ɵɵstaticViewQuery(_c2, true);
     } if (rf & 2) {
         var _t;
         ɵɵqueryRefresh(_t = ɵɵloadQuery()) && (ctx.textArea = _t.first);
@@ -1470,7 +1500,7 @@ AngularEditorComponent.ɵcmp = ɵɵdefineComponent({ type: AngularEditorComponen
             args: ['editorWrapper', { static: true }]
         }], editorToolbar: [{
             type: ViewChild,
-            args: ['editorToolbar']
+            args: ['editorToolbar', { static: true }]
         }], viewMode: [{
             type: Output
         }], blurEvent: [{
@@ -1737,15 +1767,29 @@ AngularEditorModule.ɵmod = ɵɵdefineNgModule({ type: AngularEditorModule });
 AngularEditorModule.ɵinj = ɵɵdefineInjector({ factory: function AngularEditorModule_Factory(t) { return new (t || AngularEditorModule)(); }, imports: [[
             CommonModule, FormsModule, ReactiveFormsModule
         ]] });
-(function () { (typeof ngJitMode === "undefined" || ngJitMode) && ɵɵsetNgModuleScope(AngularEditorModule, { declarations: [AngularEditorComponent, AngularEditorToolbarComponent, AeSelectComponent], imports: [CommonModule, FormsModule, ReactiveFormsModule], exports: [AngularEditorComponent, AngularEditorToolbarComponent] }); })();
+(function () { (typeof ngJitMode === "undefined" || ngJitMode) && ɵɵsetNgModuleScope(AngularEditorModule, { declarations: [AngularEditorComponent,
+        AngularEditorToolbarComponent,
+        AeSelectComponent], imports: [CommonModule, FormsModule, ReactiveFormsModule], exports: [AngularEditorComponent,
+        AngularEditorToolbarComponent] }); })();
 /*@__PURE__*/ (function () { ɵsetClassMetadata(AngularEditorModule, [{
         type: NgModule,
         args: [{
                 imports: [
                     CommonModule, FormsModule, ReactiveFormsModule
                 ],
-                declarations: [AngularEditorComponent, AngularEditorToolbarComponent, AeSelectComponent],
-                exports: [AngularEditorComponent, AngularEditorToolbarComponent]
+                declarations: [
+                    AngularEditorComponent,
+                    AngularEditorToolbarComponent,
+                    AeSelectComponent
+                ],
+                // providers: [
+                //   AngularEditorService,
+                //   ImageResizeService
+                // ],
+                exports: [
+                    AngularEditorComponent,
+                    AngularEditorToolbarComponent
+                ]
             }]
     }], null, null); })();
 

@@ -7,7 +7,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import * as i0 from "@angular/core";
 export declare class AngularEditorComponent implements OnInit, ControlValueAccessor, AfterViewInit, OnDestroy {
     private r;
-    private editorService;
+    editorService: AngularEditorService;
     private doc;
     private sanitizer;
     private cdRef;

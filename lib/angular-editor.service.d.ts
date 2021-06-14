@@ -1,3 +1,4 @@
+import { ElementRef } from '@angular/core';
 import { HttpClient, HttpEvent } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CustomClass } from './config';
@@ -18,7 +19,7 @@ export declare class AngularEditorService {
      * @param command string from triggerCommand
      */
     executeCommand(command: string, param?: string): void;
-    editCmd(cmd: string, param: string): void;
+    editCmd(cmd: string, param: string): boolean;
     /**
      * Create URL link
      * @param url string from UI prompt
@@ -49,7 +50,9 @@ export declare class AngularEditorService {
     /**
      * save selection when the editor is focussed out
      */
-    saveSelection: () => void;
+    saveSelection: (el: ElementRef) => void;
+    elementContainsSelection(el: any): boolean;
+    isOrContainsDomElem(node: any, container: any): boolean;
     /**
      * restore selection when the editor is focused in
      *

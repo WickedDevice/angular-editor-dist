@@ -12,7 +12,10 @@
             /**
              * save selection when the editor is focussed out
              */
-            this.saveSelection = function () {
+            this.saveSelection = function (el) {
+                if (!_this.elementContainsSelection(el.nativeElement)) {
+                    return; // do not save browser selections that are outside the editor
+                }
                 if (_this.doc.getSelection) {
                     var sel = _this.doc.getSelection();
                     if (sel.getRangeAt && sel.rangeCount) {
@@ -45,7 +48,7 @@
             // console.log(`executeCommand: ${command} ${param}`);
             this.restoreSelection(); // Prevent lost focus issues --JCN
             // console.log('restoring selection');
-            this.doc.execCommand(cmd, false, param);
+            return !!this.doc.execCommand(cmd, false, param);
         };
         /**
          * Create URL link
@@ -96,14 +99,34 @@
          * @param html HTML string
          */
         AngularEditorService.prototype.insertHtml = function (html) {
-            var isHTMLInserted = this.doc.execCommand('insertHTML', false, html);
+            var isHTMLInserted = this.editCmd('insertHTML', html);
             if (!isHTMLInserted) {
                 // retry...sometimes its needed
-                isHTMLInserted = this.doc.execCommand('insertHTML', false, html);
+                isHTMLInserted = this.editCmd('insertHTML', html);
                 if (!isHTMLInserted) {
                     throw new Error('Unable to perform the operation');
                 }
             }
+        };
+        AngularEditorService.prototype.elementContainsSelection = function (el) {
+            if (!el) {
+                return false;
+            }
+            var view = this.doc.defaultView;
+            var sel = view.getSelection();
+            if (sel && sel.rangeCount > 0) {
+                return this.isOrContainsDomElem(sel.getRangeAt(0).commonAncestorContainer, el);
+            }
+            return false;
+        };
+        AngularEditorService.prototype.isOrContainsDomElem = function (node, container) {
+            while (node) {
+                if (node === container) {
+                    return true;
+                }
+                node = node.parentNode;
+            }
+            return false;
         };
         /**
          * restore selection when the editor is focused in
@@ -113,6 +136,7 @@
         AngularEditorService.prototype.restoreSelection = function () {
             if (this.savedSelection) {
                 if (this.doc.getSelection) {
+                    // console.log(`***Restoring selection : ${this.savedSelection.startContainer.nodeName} ${this.savedSelection.endContainer.nodeName}`);
                     var sel = this.doc.getSelection();
                     sel.removeAllRanges();
                     sel.addRange(this.savedSelection);
@@ -1427,6 +1451,7 @@
          * @param command string from triggerCommand
          */
         AngularEditorComponent.prototype.executeCommand = function (command) {
+            console.log("***Execute command: " + command);
             this.focus();
             if (command === 'focus') {
                 return;
@@ -1473,7 +1498,7 @@
          * @description fires when cursor leaves textarea
          */
         AngularEditorComponent.prototype.onTextAreaMouseOut = function (event) {
-            this.editorService.saveSelection();
+            this.editorService.saveSelection(this.textArea);
         };
         /**
          * blur event
@@ -1484,7 +1509,7 @@
              */
             // this.editorService.executeInNextQueueIteration(this.editorService.saveSelection);
             // Changing from async to sync here seemed to fix an "unfocused" problem
-            this.editorService.saveSelection();
+            this.editorService.saveSelection(this.textArea);
             if (typeof this.onTouched === 'function') {
                 this.onTouched();
             }
@@ -1507,6 +1532,7 @@
          */
         AngularEditorComponent.prototype.focus = function () {
             if (this.modeVisual) {
+                this.editorService.restoreSelection();
                 this.textArea.nativeElement.focus();
             }
             else {
@@ -1669,11 +1695,13 @@
          * Send a node array from the contentEditable of the editor
          */
         AngularEditorComponent.prototype.exec = function () {
-            this.editorToolbar.triggerButtons();
+            if (this.editorToolbar && this.editorToolbar.triggerButtons) {
+                this.editorToolbar.triggerButtons();
+            }
             var userSelection;
             if (this.doc.getSelection) {
                 userSelection = this.doc.getSelection();
-                this.editorService.executeInNextQueueIteration(this.editorService.saveSelection);
+                this.editorService.executeInNextQueueIteration(this.editorService.saveSelection.bind(this, this.textArea));
             }
             var a = userSelection.focusNode;
             var els = [];
@@ -1681,7 +1709,9 @@
                 els.unshift(a);
                 a = a.parentNode;
             }
-            this.editorToolbar.triggerBlocks(els);
+            if (this.editorToolbar && this.editorToolbar.triggerBlocks) {
+                this.editorToolbar.triggerBlocks(els);
+            }
         };
         AngularEditorComponent.prototype.configure = function () {
             this.editorService.uploadUrl = this.config.uploadUrl;
@@ -1732,7 +1762,7 @@
             if (rf & 1) {
                 i0.ɵɵstaticViewQuery(_c0$1, true);
                 i0.ɵɵstaticViewQuery(_c1, true);
-                i0.ɵɵviewQuery(_c2, true);
+                i0.ɵɵstaticViewQuery(_c2, true);
             }
             if (rf & 2) {
                 var _t;
@@ -1832,7 +1862,7 @@
                     args: ['editorWrapper', { static: true }]
                 }], editorToolbar: [{
                     type: i0.ViewChild,
-                    args: ['editorToolbar']
+                    args: ['editorToolbar', { static: true }]
                 }], viewMode: [{
                     type: i0.Output
                 }], blurEvent: [{
@@ -2132,7 +2162,12 @@
     AngularEditorModule.ɵinj = i0.ɵɵdefineInjector({ factory: function AngularEditorModule_Factory(t) { return new (t || AngularEditorModule)(); }, imports: [[
                 i1$1.CommonModule, forms.FormsModule, forms.ReactiveFormsModule
             ]] });
-    (function () { (typeof ngJitMode === "undefined" || ngJitMode) && i0.ɵɵsetNgModuleScope(AngularEditorModule, { declarations: [AngularEditorComponent, AngularEditorToolbarComponent, AeSelectComponent], imports: [i1$1.CommonModule, forms.FormsModule, forms.ReactiveFormsModule], exports: [AngularEditorComponent, AngularEditorToolbarComponent] }); })();
+    (function () {
+        (typeof ngJitMode === "undefined" || ngJitMode) && i0.ɵɵsetNgModuleScope(AngularEditorModule, { declarations: [AngularEditorComponent,
+                AngularEditorToolbarComponent,
+                AeSelectComponent], imports: [i1$1.CommonModule, forms.FormsModule, forms.ReactiveFormsModule], exports: [AngularEditorComponent,
+                AngularEditorToolbarComponent] });
+    })();
     /*@__PURE__*/ (function () {
         i0.ɵsetClassMetadata(AngularEditorModule, [{
                 type: i0.NgModule,
@@ -2140,8 +2175,19 @@
                         imports: [
                             i1$1.CommonModule, forms.FormsModule, forms.ReactiveFormsModule
                         ],
-                        declarations: [AngularEditorComponent, AngularEditorToolbarComponent, AeSelectComponent],
-                        exports: [AngularEditorComponent, AngularEditorToolbarComponent]
+                        declarations: [
+                            AngularEditorComponent,
+                            AngularEditorToolbarComponent,
+                            AeSelectComponent
+                        ],
+                        // providers: [
+                        //   AngularEditorService,
+                        //   ImageResizeService
+                        // ],
+                        exports: [
+                            AngularEditorComponent,
+                            AngularEditorToolbarComponent
+                        ]
                     }]
             }], null, null);
     })();
