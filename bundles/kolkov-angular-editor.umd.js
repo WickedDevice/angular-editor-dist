@@ -46,7 +46,7 @@
         };
         AngularEditorService.prototype.editCmd = function (cmd, param) {
             // console.log(`executeCommand: ${command} ${param}`);
-            this.restoreSelection(); // Prevent lost focus issues --JCN
+            // this.restoreSelection();  // Prevent lost focus issues --JCN
             // console.log('restoring selection');
             return !!this.doc.execCommand(cmd, false, param);
         };
