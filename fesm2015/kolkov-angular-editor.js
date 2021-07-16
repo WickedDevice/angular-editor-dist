@@ -99,12 +99,36 @@ class AngularEditorService {
      * @param html HTML string
      */
     insertHtml(html) {
-        let isHTMLInserted = this.editCmd('insertHTML', html);
-        if (!isHTMLInserted) {
-            // retry...sometimes its needed
-            isHTMLInserted = this.editCmd('insertHTML', html);
+        if (typeof html === 'string') {
+            // you can pass html in as a string, but no guarantees that insertHTML won't mutilate it
+            // if you want to guarantee the DOM structure, pass it in as a built HTMLElement
+            let isHTMLInserted = this.editCmd('insertHTML', html);
             if (!isHTMLInserted) {
-                throw new Error('Unable to perform the operation');
+                // retry...sometimes its needed
+                isHTMLInserted = this.editCmd('insertHTML', html);
+                if (!isHTMLInserted) {
+                    throw new Error('Unable to perform the operation');
+                }
+            }
+        }
+        else if (typeof html === 'object') {
+            // see https://stackoverflow.com/questions/25941559/is-there-a-way-to-keep-execcommandinserthtml-from-removing-attributes-in-chr
+            // this case is assumed to receive html as a proper HTMLElement
+            // if the existing selection is not collapsed, delete it
+            this.editCmd('delete', '');
+            let sel;
+            if (window.getSelection) {
+                sel = window.getSelection();
+                if (sel.rangeCount) {
+                    const range = sel.getRangeAt(0);
+                    range.collapse(true);
+                    range.insertNode(html);
+                    // Move the caret immediately after the inserted span
+                    range.setStartAfter(html);
+                    range.collapse(true);
+                    sel.removeAllRanges();
+                    sel.addRange(range);
+                }
             }
         }
     }
@@ -355,6 +379,14 @@ const angularEditorConfig = {
     sanitize: true,
     toolbarPosition: 'top',
     outline: true,
+    /*toolbarHiddenButtons: [
+      ['bold', 'italic', 'underline', 'strikeThrough', 'superscript', 'subscript'],
+      ['heading', 'fontName', 'fontSize', 'color'],
+      ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull', 'indent', 'outdent'],
+      ['cut', 'copy', 'delete', 'removeFormat', 'undo', 'redo'],
+      ['paragraph', 'blockquote', 'removeBlockquote', 'horizontalLine', 'orderedList', 'unorderedList'],
+      ['link', 'unlink', 'image', 'video']
+    ]*/
 };
 
 class ImageResizeService {
@@ -742,7 +774,7 @@ class AngularEditorToolbarComponent {
         return __awaiter(this, void 0, void 0, function* () {
             if (this.insertResourceCallback) {
                 const ret = yield this.insertResourceCallback(this.editorService.selectedText);
-                if (typeof ret === 'string') {
+                if (ret) {
                     this.editorService.insertArbitraryHtml(ret);
                 }
             }

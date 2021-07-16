@@ -45,7 +45,7 @@ export declare class AngularEditorService {
      * Create raw HTML
      * @param html HTML string
      */
-    insertHtml(html: string): void;
+    insertHtml(html: any): void;
     /**
      * save selection when the editor is focussed out
      */
