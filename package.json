@@ -9,7 +9,7 @@
   "bugs": {
     "url": "https://github.com/kolkov/angular-editor/issues"
   },
-  "peerDependencies": {
+  "__peerDependencies__": {
     "@angular/common": ">=8.0.0 <12",
     "@angular/core": ">=8.0.0 <12",
     "@angular/forms": ">=8.0.0 <12",
