@@ -9,12 +9,12 @@
   "bugs": {
     "url": "https://github.com/kolkov/angular-editor/issues"
   },
-  "__peerDependencies__": {
-    "@angular/common": ">=8.0.0 <12",
-    "@angular/core": ">=8.0.0 <12",
-    "@angular/forms": ">=8.0.0 <12",
-    "@angular/platform-browser": ">=8.0.0 <12",
-    "rxjs": "^6.x.x"
+  "peerDependencies": {
+    "@angular/common": ">=8 <19",
+    "@angular/core": ">=8 <19",
+    "@angular/forms": ">=8 <19",
+    "@angular/platform-browser": ">=8 <19",
+    "rxjs": ">=6 <8"
   },
   "dependencies": {
     "tslib": "^2.0.0"
