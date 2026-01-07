@@ -1,5 +1,6 @@
 import { ElementRef, EventEmitter, OnInit, Renderer2 } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
+import * as i0 from "@angular/core";
 export interface SelectOption {
     label: string;
     value: string;
@@ -40,4 +41,7 @@ export declare class AeSelectComponent implements OnInit, ControlValueAccessor {
     _handleEnter($event: any): void;
     _handleTab($event: any): void;
     _handleBackspace(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<AeSelectComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<AeSelectComponent, "ae-select", never, { "options": "options"; "isHidden": "hidden"; }, { "changeEvent": "change"; }, never, never, false>;
 }
+//# sourceMappingURL=ae-select.component.d.ts.map

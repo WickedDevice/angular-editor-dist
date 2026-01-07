@@ -5,8 +5,11 @@ import { CustomClass } from './config';
 import { SelectOption } from './ae-select/ae-select.component';
 import { Observable } from 'rxjs';
 import { ImageResizeService } from './image-resize.service';
+import * as i0 from "@angular/core";
 export declare class AEButtonIsHiddenPipe implements PipeTransform {
     transform(name: string, hiddenButtons: any): boolean;
+    static ɵfac: i0.ɵɵFactoryDeclaration<AEButtonIsHiddenPipe, never>;
+    static ɵpipe: i0.ɵɵPipeDeclaration<AEButtonIsHiddenPipe, "buttonIsHidden", false>;
 }
 export declare class AngularEditorToolbarComponent {
     private r;
@@ -99,4 +102,7 @@ export declare class AngularEditorToolbarComponent {
      */
     setCustomClass(classId: string): void;
     focus(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<AngularEditorToolbarComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<AngularEditorToolbarComponent, "angular-editor-toolbar", never, { "id": "id"; "uploadUrl": "uploadUrl"; "upload": "upload"; "showToolbar": "showToolbar"; "fonts": "fonts"; "customClasses": "customClasses"; "defaultFontName": "defaultFontName"; "defaultFontSize": "defaultFontSize"; "hiddenButtons": "hiddenButtons"; "insertResourceCallback": "insertResourceCallback"; }, { "execute": "execute"; "markdownEmitter": "markdownEmitter"; }, never, never, false>;
 }
+//# sourceMappingURL=angular-editor-toolbar.component.d.ts.map

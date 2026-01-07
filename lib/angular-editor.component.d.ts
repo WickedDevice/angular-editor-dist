@@ -1,9 +1,10 @@
-import { AfterViewInit, ChangeDetectorRef, ElementRef, EventEmitter, OnDestroy, OnInit, Renderer2 } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, ElementRef, EventEmitter, OnDestroy, OnInit, Renderer2, TemplateRef } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
 import { AngularEditorConfig } from './config';
 import { AngularEditorToolbarComponent } from './angular-editor-toolbar.component';
 import { AngularEditorService } from './angular-editor.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import * as i0 from "@angular/core";
 export declare class AngularEditorComponent implements OnInit, ControlValueAccessor, AfterViewInit, OnDestroy {
     private r;
     editorService: AngularEditorService;
@@ -30,6 +31,8 @@ export declare class AngularEditorComponent implements OnInit, ControlValueAcces
     textArea: ElementRef;
     editorWrapper: ElementRef;
     editorToolbar: AngularEditorToolbarComponent;
+    customButtonsTemplateRef?: TemplateRef<any>;
+    executeCommandFn: any;
     viewMode: EventEmitter<boolean>;
     /** emits `blur` event when focused out from the textarea */
     blurEvent: EventEmitter<FocusEvent>;
@@ -41,13 +44,14 @@ export declare class AngularEditorComponent implements OnInit, ControlValueAcces
     ngOnInit(): void;
     emitMarkdown($event: any): void;
     ngAfterViewInit(): void;
+    onPaste(event: ClipboardEvent): string;
     plainPaste(e: any): void;
     doInsertHTML(name: string): void;
     /**
      * Executed command from editor header buttons
      * @param command string from triggerCommand
      */
-    executeCommand(command: string): void;
+    executeCommand(command: string, value?: string): void;
     /**
      * focus event
      */
@@ -127,4 +131,7 @@ export declare class AngularEditorComponent implements OnInit, ControlValueAcces
     getCustomTags(): string;
     ngOnDestroy(): void;
     filterStyles(html: string): string;
+    static ɵfac: i0.ɵɵFactoryDeclaration<AngularEditorComponent, [null, null, null, null, null, { attribute: "tabindex"; }, { attribute: "autofocus"; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<AngularEditorComponent, "angular-editor", never, { "id": "id"; "config": "config"; "placeholder": "placeholder"; "tabIndex": "tabIndex"; }, { "html": "html"; "markdownEmitter": "markdownEmitter"; "viewMode": "viewMode"; "blurEvent": "blur"; "focusEvent": "focus"; }, ["customButtonsTemplateRef"], never, false>;
 }
+//# sourceMappingURL=angular-editor.component.d.ts.map

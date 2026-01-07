@@ -1,7 +1,7 @@
 {
   "name": "@kolkov/angular-editor",
-  "version": "1.1.5",
-  "description": "A simple native WYSIWYG editor for Angular 6+, 7+, 8+. Rich Text editor component for Angular.",
+  "version": "2.1.0",
+  "description": "A simple native WYSIWYG editor for Angular 8+, 13+. Rich Text editor component for Angular.",
   "author": "Andrey Kolkov <a.kolkov@gmail.com>",
   "repository": "https://github.com/kolkov/angular-editor",
   "license": "MIT",
@@ -10,14 +10,11 @@
     "url": "https://github.com/kolkov/angular-editor/issues"
   },
   "peerDependencies": {
-    "@angular/common": ">=8 <19",
-    "@angular/core": ">=8 <19",
-    "@angular/forms": ">=8 <19",
-    "@angular/platform-browser": ">=8 <19",
-    "rxjs": ">=6 <8"
+    "@angular/common": ">=14",
+    "@angular/core": ">=14"
   },
   "dependencies": {
-    "tslib": "^2.0.0"
+    "tslib": "^2.3.0"
   },
   "keywords": [
     "angular",
@@ -30,12 +27,27 @@
     "rich",
     "rich text editor"
   ],
-  "main": "bundles/kolkov-angular-editor.umd.js",
-  "module": "fesm2015/kolkov-angular-editor.js",
-  "es2015": "fesm2015/kolkov-angular-editor.js",
-  "esm2015": "esm2015/kolkov-angular-editor.js",
-  "fesm2015": "fesm2015/kolkov-angular-editor.js",
-  "typings": "kolkov-angular-editor.d.ts",
-  "metadata": "kolkov-angular-editor.metadata.json",
-  "sideEffects": false
+  "module": "fesm2015/kolkov-angular-editor.mjs",
+  "es2020": "fesm2020/kolkov-angular-editor.mjs",
+  "esm2020": "esm2020/kolkov-angular-editor.mjs",
+  "fesm2020": "fesm2020/kolkov-angular-editor.mjs",
+  "fesm2015": "fesm2015/kolkov-angular-editor.mjs",
+  "typings": "index.d.ts",
+  "exports": {
+    "./package.json": {
+      "default": "./package.json"
+    },
+    ".": {
+      "types": "./index.d.ts",
+      "esm2020": "./esm2020/kolkov-angular-editor.mjs",
+      "es2020": "./fesm2020/kolkov-angular-editor.mjs",
+      "es2015": "./fesm2015/kolkov-angular-editor.mjs",
+      "node": "./fesm2015/kolkov-angular-editor.mjs",
+      "default": "./fesm2020/kolkov-angular-editor.mjs"
+    }
+  },
+  "sideEffects": false,
+  "scripts": {
+    "prepublishOnly": "node --eval \"console.error('ERROR: Trying to publish a package that has been compiled by Ivy in full compilation mode. This is not allowed.\\nPlease delete and rebuild the package with Ivy partial compilation mode, before attempting to publish.\\n')\" && exit 1"
+  }
 }

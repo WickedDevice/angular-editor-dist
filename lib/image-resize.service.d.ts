@@ -1,3 +1,4 @@
+import * as i0 from "@angular/core";
 export declare class ImageResizeService {
     hasBlobConstructor: boolean;
     hasArrayBufferViewSupport: boolean;
@@ -13,4 +14,7 @@ export declare class ImageResizeService {
     _toBlob(canvas: any, type: any): any;
     _loadImage(image: any, file: any, callback?: any): void;
     _toFile(theBlob: Blob, fileName: string): File;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ImageResizeService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<ImageResizeService>;
 }
+//# sourceMappingURL=image-resize.service.d.ts.map

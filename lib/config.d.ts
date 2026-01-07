@@ -34,6 +34,8 @@ export interface AngularEditorConfig {
     toolbarPosition?: 'top' | 'bottom';
     outline?: boolean;
     toolbarHiddenButtons?: string[][];
+    rawPaste?: boolean;
     toolbarInsertResourceCallback?: (string: any) => string;
 }
 export declare const angularEditorConfig: AngularEditorConfig;
+//# sourceMappingURL=config.d.ts.map
