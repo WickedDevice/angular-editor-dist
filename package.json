@@ -1,7 +1,7 @@
 {
   "name": "@kolkov/angular-editor",
-  "version": "2.1.0",
-  "description": "A simple native WYSIWYG editor for Angular 8+, 13+. Rich Text editor component for Angular.",
+  "version": "3.0.4",
+  "description": "A simple native WYSIWYG editor for Angular 20+. Rich Text editor component for Angular.",
   "author": "Andrey Kolkov <a.kolkov@gmail.com>",
   "repository": "https://github.com/kolkov/angular-editor",
   "license": "MIT",
@@ -10,8 +10,10 @@
     "url": "https://github.com/kolkov/angular-editor/issues"
   },
   "peerDependencies": {
-    "@angular/common": ">=14",
-    "@angular/core": ">=14"
+    "@angular/common": "^20.0.0 || ^21.0.0",
+    "@angular/core": "^20.0.0 || ^21.0.0",
+    "@angular/forms": "^20.0.0 || ^21.0.0",
+    "rxjs": "^7.8.0"
   },
   "dependencies": {
     "tslib": "^2.3.0"
@@ -27,11 +29,7 @@
     "rich",
     "rich text editor"
   ],
-  "module": "fesm2015/kolkov-angular-editor.mjs",
-  "es2020": "fesm2020/kolkov-angular-editor.mjs",
-  "esm2020": "esm2020/kolkov-angular-editor.mjs",
-  "fesm2020": "fesm2020/kolkov-angular-editor.mjs",
-  "fesm2015": "fesm2015/kolkov-angular-editor.mjs",
+  "module": "fesm2022/kolkov-angular-editor.mjs",
   "typings": "index.d.ts",
   "exports": {
     "./package.json": {
@@ -39,15 +37,8 @@
     },
     ".": {
       "types": "./index.d.ts",
-      "esm2020": "./esm2020/kolkov-angular-editor.mjs",
-      "es2020": "./fesm2020/kolkov-angular-editor.mjs",
-      "es2015": "./fesm2015/kolkov-angular-editor.mjs",
-      "node": "./fesm2015/kolkov-angular-editor.mjs",
-      "default": "./fesm2020/kolkov-angular-editor.mjs"
+      "default": "./fesm2022/kolkov-angular-editor.mjs"
     }
   },
-  "sideEffects": false,
-  "scripts": {
-    "prepublishOnly": "node --eval \"console.error('ERROR: Trying to publish a package that has been compiled by Ivy in full compilation mode. This is not allowed.\\nPlease delete and rebuild the package with Ivy partial compilation mode, before attempting to publish.\\n')\" && exit 1"
-  }
+  "sideEffects": false
 }
