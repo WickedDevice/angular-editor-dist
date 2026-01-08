@@ -1675,7 +1675,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.3.13", ngImpo
 class AngularEditorModule {
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.3.13", ngImport: i0, type: AngularEditorModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
     static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "20.3.13", ngImport: i0, type: AngularEditorModule, declarations: [AngularEditorComponent, AeToolbarComponent, AeSelectComponent, AeButtonComponent, AeToolbarSetComponent, AEButtonIsHiddenPipe], imports: [CommonModule, FormsModule, ReactiveFormsModule], exports: [AngularEditorComponent, AeToolbarComponent, AeButtonComponent, AeToolbarSetComponent, AEButtonIsHiddenPipe] });
-    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "20.3.13", ngImport: i0, type: AngularEditorModule, imports: [CommonModule, FormsModule, ReactiveFormsModule] });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "20.3.13", ngImport: i0, type: AngularEditorModule, providers: [ImageResizeService], imports: [CommonModule, FormsModule, ReactiveFormsModule] });
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.3.13", ngImport: i0, type: AngularEditorModule, decorators: [{
             type: NgModule,
@@ -1684,7 +1684,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.3.13", ngImpo
                         CommonModule, FormsModule, ReactiveFormsModule
                     ],
                     declarations: [AngularEditorComponent, AeToolbarComponent, AeSelectComponent, AeButtonComponent, AeToolbarSetComponent, AEButtonIsHiddenPipe],
-                    exports: [AngularEditorComponent, AeToolbarComponent, AeButtonComponent, AeToolbarSetComponent, AEButtonIsHiddenPipe]
+                    exports: [AngularEditorComponent, AeToolbarComponent, AeButtonComponent, AeToolbarSetComponent, AEButtonIsHiddenPipe],
+                    providers: [ImageResizeService]
                 }]
         }] });
 
